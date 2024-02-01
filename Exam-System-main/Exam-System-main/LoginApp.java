@@ -27,7 +27,7 @@ public class LoginApp extends JFrame implements ActionListener {
     	
         setTitle("Login");
         setLayout(new GridLayout(5,10,20,40));
-        User a = new User("lisha","1234");
+        User a = new User("fakeuser","fakeuser123");
         users.add(a);
 
         add(L1 = new JLabel("Username:"));
