@@ -1,4 +1,4 @@
-Java Swing Login Application
+## Java Swing Login Application
 
 This is a simple Java Swing-based login application designed for user authentication.
 The application provides a user interface for entering a username and password, with an option to show/hide the password. 
@@ -50,3 +50,10 @@ Additionally, it includes a "Forgot Password?" feature allowing users to recover
    ```bash
    javac LoginApp.java
    java LoginApp
+
+The application window will appear, allowing users to log in or recover their passwords.
+Developer
+Gauresh G Pai
+
+## License
+This project is licensed under the MIT License. Feel free to use, modify, and distribute the code. Contributions are welcome!
