@@ -52,7 +52,8 @@ Additionally, it includes a "Forgot Password?" feature allowing users to recover
    java LoginApp
 
 The application window will appear, allowing users to log in or recover their passwords.
-Developer
+
+## Developer
 Gauresh G Pai
 
 ## License
