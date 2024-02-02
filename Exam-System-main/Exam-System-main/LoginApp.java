@@ -3,104 +3,168 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.Arrays;
 
-class User {
-    String username;
-    char[] password;
-
-    public User(String username, char[] password) {
-        this.username = username;
-        this.password = password;
-    }
-}
-
 public class LoginApp extends JFrame implements ActionListener {
 
     private static final String USERNAME_LABEL_TEXT = "Username:";
     private static final String PASSWORD_LABEL_TEXT = "Password:";
+    private static final String TOP_BAR_TEXT = "Login to Take the Quiz";
 
-    JLabel usernameLabel, passwordLabel, errorLabel;
-    JTextField usernameField;
+    JLabel usernameLabel, passwordLabel, errorLabel, topBarLabel, securityQuestionLabel, securityAnswerLabel;
+    JTextField usernameField, securityAnswerField;
     JPasswordField passwordField;
     JCheckBox showPasswordCheckbox;
-    JButton loginButton;
+    JButton loginButton, forgotPasswordButton;
 
-    // Use an array to store multiple users
-    User[] users = {new User("user1", "password1".toCharArray()),new User("a","b".toCharArray()), new User("user2", "password2".toCharArray())};
+    User[] users = {
+        new User("user1", "password1".toCharArray(), "What is your pet's name?", "Fluffy"),
+        new User("a", "b".toCharArray(), "Where were you born?", "CityX"),
+        new User("user2", "password2".toCharArray(), "What is your favorite color?", "Blue")
+    };
+
+    // Forgot Password components
+    private ForgotPasswordApp forgotPasswordApp;
 
     public LoginApp() {
         setTitle("Login");
         setLayout(new BorderLayout(20, 20));
 
-        JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 10));
-        inputPanel.add(new JLabel(USERNAME_LABEL_TEXT));
-        inputPanel.add(usernameField = new JTextField());
-        inputPanel.add(new JLabel(PASSWORD_LABEL_TEXT));
-        inputPanel.add(passwordField = new JPasswordField());
-        inputPanel.add(new JLabel()); // Empty label for spacing
-        inputPanel.add(showPasswordCheckbox = new JCheckBox("Show Password"));
+        // Top bar with title
+        topBarLabel = new JLabel(TOP_BAR_TEXT, SwingConstants.CENTER);
+        topBarLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        topBarLabel.setForeground(Color.WHITE);
+        topBarLabel.setBackground(new Color(102, 102, 102));
+        topBarLabel.setOpaque(true);
+        add(topBarLabel, BorderLayout.NORTH);
 
-        // Change the background color and font style for the inputPanel
-        inputPanel.setBackground(new Color(230, 230, 255));
-        Font inputFont = new Font("Arial", Font.PLAIN, 14);
+        // Error label at the top
+        errorLabel = new JLabel();
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        errorLabel.setBackground(new Color(255, 77, 77));
+        errorLabel.setOpaque(true);
+        add(errorLabel, BorderLayout.CENTER);
+
+        // Input panel with form elements
+        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        inputPanel.add(new JLabel(USERNAME_LABEL_TEXT));
+        usernameField = new JTextField();
+        inputPanel.add(usernameField);
+
+        inputPanel.add(new JLabel(PASSWORD_LABEL_TEXT));
+        passwordField = new JPasswordField();
+        inputPanel.add(passwordField);
+
+        showPasswordCheckbox = new JCheckBox("Show Password");
+        inputPanel.add(new JPanel()); // Empty panel for spacing
+        inputPanel.add(showPasswordCheckbox);
+
+        // Forgot Password button on the right side
+        forgotPasswordButton = new JButton("Forgot Password?");
+        forgotPasswordButton.addActionListener(this);
+        inputPanel.add(new JPanel()); // Empty panel for spacing
+        inputPanel.add(forgotPasswordButton);
+
+        add(inputPanel, BorderLayout.CENTER);
+
+        // Login button at the bottom
+        loginButton = new JButton("Login");
+        loginButton.addActionListener(this);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(loginButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Styling changes
+        inputPanel.setBackground(Color.WHITE);
+        Font inputFont = new Font("Segoe UI", Font.PLAIN, 16);
         usernameField.setFont(inputFont);
         passwordField.setFont(inputFont);
         inputPanel.setFont(inputFont);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        loginButton = new JButton("Login");
-        loginButton.addActionListener(this);
-        buttonPanel.add(loginButton);
-
-        // Change the background color and font style for the buttonPanel
-        buttonPanel.setBackground(new Color(200, 200, 255));
-        loginButton.setFont(new Font("Arial", Font.BOLD, 16));
-
-        add(inputPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        errorLabel = new JLabel();
-        errorLabel.setForeground(Color.RED);
-        // Change the font style for the errorLabel
-        errorLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        add(errorLabel, BorderLayout.NORTH);
-
-        // Add ActionListener to the checkbox
         showPasswordCheckbox.addActionListener(this);
+        showPasswordCheckbox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        showPasswordCheckbox.setForeground(Color.BLACK);
 
-        setSize(400, 250);
-        setLocationRelativeTo(null); // Center the window
+        getContentPane().setBackground(Color.WHITE);
+
+        setSize(400, 400);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
+            loginButton.setEnabled(false);
+            new LoginWorker().execute();
+        } else if (e.getSource() == showPasswordCheckbox) {
+            passwordField.setEchoChar(showPasswordCheckbox.isSelected() ? '\0' : '*');
+        } else if (e.getSource() == forgotPasswordButton) {
+            handleForgotPassword();
+        }
+    }
+
+    private void handleForgotPassword() {
+        // Check if username exists
+        String username = usernameField.getText();
+        User user = findUserByUsername(username);
+
+        if (user != null) {
+            // Display the ForgotPasswordApp window
+            if (forgotPasswordApp != null) {
+                forgotPasswordApp.dispose();
+            }
+            forgotPasswordApp = new ForgotPasswordApp(user);
+        } else {
+            JOptionPane.showMessageDialog(this, "Username not found.");
+        }
+    }
+
+    private User findUserByUsername(String username) {
+        for (User u : users) {
+            if (u.username.equals(username)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    private class LoginWorker extends SwingWorker<Boolean, Void> {
+
+        @Override
+        protected Boolean doInBackground() throws Exception {
             String username = usernameField.getText();
             char[] passwordChars = passwordField.getPassword();
 
-            boolean found = false;
-
             for (User user : users) {
                 if (user.username.equals(username) && Arrays.equals(user.password, passwordChars)) {
-                    found = true;
-                    // Grant access here
-                    dispose();
-                    // Display a success message or navigate to the next screen
-                    OnlineTest testApp = new OnlineTest("Online Test of Java for " + user.username);
-                    testApp.setVisible(true);
-                    break;
+                    return true; // Successful login
                 }
             }
 
-            if (!found) {
-                errorLabel.setText("Invalid username or password");
-                // Clear the password on unsuccessful login
-                Arrays.fill(passwordChars, ' ');
-                passwordField.setText("");
+            return false; // Unsuccessful login
+        }
+
+        @Override
+        protected void done() {
+            try {
+                boolean loginSuccess = get();
+
+                if (loginSuccess) {
+                    dispose();
+                    OnlineTest testApp = new OnlineTest("Online Test of Java for " + usernameField.getText());
+                    testApp.setVisible(true);
+                } else {
+                    errorLabel.setText("Invalid username or password");
+                    Arrays.fill(passwordField.getPassword(), ' ');
+                    passwordField.setText("");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                loginButton.setEnabled(true);
             }
-        } else if (e.getSource() == showPasswordCheckbox) {
-            // Toggle password visibility
-            passwordField.setEchoChar(showPasswordCheckbox.isSelected() ? '\0' : '*');
         }
     }
 
