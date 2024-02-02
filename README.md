@@ -56,5 +56,3 @@ The application window will appear, allowing users to log in or recover their pa
 ## Developer
 Gauresh G Pai
 
-## License
-This project is licensed under the MIT License. Feel free to use, modify, and distribute the code. Contributions are welcome!
