@@ -9,7 +9,7 @@ public class LoginApp extends JFrame implements ActionListener {
     private static final String PASSWORD_LABEL_TEXT = "Password:";
     private static final String TOP_BAR_TEXT = "Login to Take the Quiz";
 
-    JLabel usernameLabel, passwordLabel, errorLabel, topBarLabel, securityQuestionLabel, securityAnswerLabel;
+    JLabel usernameLabel, passwordLabel, topBarLabel, securityQuestionLabel, securityAnswerLabel;
     JTextField usernameField, securityAnswerField;
     JPasswordField passwordField;
     JCheckBox showPasswordCheckbox;
@@ -36,15 +36,6 @@ public class LoginApp extends JFrame implements ActionListener {
         topBarLabel.setOpaque(true);
         add(topBarLabel, BorderLayout.NORTH);
 
-        // Error label at the top
-        errorLabel = new JLabel();
-        errorLabel.setForeground(Color.RED);
-        errorLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        errorLabel.setBackground(new Color(255, 77, 77));
-        errorLabel.setOpaque(true);
-        add(errorLabel, BorderLayout.CENTER);
-
-        // Input panel with form elements
         JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -57,13 +48,13 @@ public class LoginApp extends JFrame implements ActionListener {
         inputPanel.add(passwordField);
 
         showPasswordCheckbox = new JCheckBox("Show Password");
-        inputPanel.add(new JPanel()); // Empty panel for spacing
+        inputPanel.add(new JPanel());
         inputPanel.add(showPasswordCheckbox);
 
         // Forgot Password button on the right side
         forgotPasswordButton = new JButton("Forgot Password?");
         forgotPasswordButton.addActionListener(this);
-        inputPanel.add(new JPanel()); // Empty panel for spacing
+        inputPanel.add(new JPanel());
         inputPanel.add(forgotPasswordButton);
 
         add(inputPanel, BorderLayout.CENTER);
@@ -116,7 +107,7 @@ public class LoginApp extends JFrame implements ActionListener {
             }
             forgotPasswordApp = new ForgotPasswordApp(user);
         } else {
-            JOptionPane.showMessageDialog(this, "Username not found.");
+            showErrorMessage("Username not found.");
         }
     }
 
@@ -155,7 +146,7 @@ public class LoginApp extends JFrame implements ActionListener {
                     OnlineTest testApp = new OnlineTest("Online Test of Java for " + usernameField.getText());
                     testApp.setVisible(true);
                 } else {
-                    errorLabel.setText("Invalid username or password");
+                    showErrorMessage("Invalid username or password");
                     Arrays.fill(passwordField.getPassword(), ' ');
                     passwordField.setText("");
                 }
@@ -166,6 +157,26 @@ public class LoginApp extends JFrame implements ActionListener {
                 loginButton.setEnabled(true);
             }
         }
+    }
+
+    private void showErrorMessage(String message) {
+        // Display error message in the error label
+        topBarLabel.setText(message);
+        topBarLabel.setBackground(new Color(255, 77, 77));
+        topBarLabel.setOpaque(true);
+
+        // Reset the error message after a delay
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                topBarLabel.setText(TOP_BAR_TEXT);
+                topBarLabel.setBackground(new Color(102, 102, 102));
+                topBarLabel.setOpaque(true);
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     public static void main(String s[]) {
