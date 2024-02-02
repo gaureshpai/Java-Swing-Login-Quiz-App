@@ -2,10 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class OnlineTest extends JFrame implements ActionListener {
+public class OnlineTest extends JFrame implements ActionListener {
     JLabel questionLabel;
-    JRadioButton options[] = new JRadioButton[5];
-    JButton nextButton, bookmarkButton, prevButton; 
+    JRadioButton options[] = new JRadioButton[4]; // Reduced to 4 radio buttons
+    JButton nextButton, bookmarkButton, prevButton, resultButton; 
     ButtonGroup buttonGroup;
     int count = 0, current = 0, bookmarkCount = 1;
     int bookmarks[] = new int[10];
@@ -17,7 +17,7 @@ class OnlineTest extends JFrame implements ActionListener {
         add(questionLabel);
 
         buttonGroup = new ButtonGroup();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) { // Changed to 4 radio buttons
             options[i] = new JRadioButton();
             add(options[i]);
             buttonGroup.add(options[i]);
@@ -26,26 +26,31 @@ class OnlineTest extends JFrame implements ActionListener {
         nextButton = new JButton("Next");
         bookmarkButton = new JButton("Bookmark");
         prevButton = new JButton("Previous"); 
+        resultButton = new JButton("Result"); // Added Result button
 
         nextButton.addActionListener(this);
         bookmarkButton.addActionListener(this);
         prevButton.addActionListener(this);
+        resultButton.addActionListener(this); // Added action listener for Result button
 
         add(nextButton);
         add(prevButton); 
         add(bookmarkButton);
+        add(resultButton); // Added Result button
 
         setQuestions();
-        
+
         questionLabel.setBounds(30, 40, 450, 20);
 
-        for (int i = 0, y = 1; i < 5; i++, y++) {
+        for (int i = 0; i < 4; i++) { // Changed to 4 radio buttons
             options[i].setBounds(50, 80 + i * 30, 200, 20);
         }
 
         nextButton.setBounds(100, 240, 100, 30);
         prevButton.setBounds(210, 240, 100, 30); 
-        bookmarkButton.setBounds(320, 240, 100, 30); 
+        bookmarkButton.setBounds(320, 240, 100, 30);
+        resultButton.setBounds(480, 20, 100, 30); // Positioned the Result button in the top right corner
+        resultButton.setVisible(false); // Initially, Result button is hidden
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -56,13 +61,15 @@ class OnlineTest extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == nextButton) {
-            if (checkAnswer())
+            if (checkAnswer()) {
                 count++;
+            }
             current++;
             setQuestions();
             if (current == 9) {
                 nextButton.setEnabled(false);
-                bookmarkButton.setText("Result");
+                bookmarkButton.setEnabled(false);
+                resultButton.setVisible(true);
             }
         } else if (e.getSource() == bookmarkButton) {
             JButton bookmarkBtn = new JButton("Bookmark " + bookmarkCount);
@@ -73,8 +80,10 @@ class OnlineTest extends JFrame implements ActionListener {
             bookmarkCount++;
             current++;
             setQuestions();
-            if (current == 9)
-                bookmarkButton.setText("Result");
+            if (current == 9) {
+                bookmarkButton.setEnabled(false);
+                resultButton.setVisible(true); // Display Result button when all questions are attempted
+            }
             setVisible(false);
             setVisible(true);
         } else if (e.getSource() == prevButton) {
@@ -95,17 +104,17 @@ class OnlineTest extends JFrame implements ActionListener {
                 }
             }
 
-            if (e.getActionCommand().equals("Result")) {
+            if (e.getSource() == resultButton) {
                 if (checkAnswer())
                     count++;
-                current++;
-                JOptionPane.showMessageDialog(this, "Correct answers: " + count);
+                JOptionPane.showMessageDialog(this, "Correct answers: " + count + "\nThank you for taking the quiz!");
                 System.exit(0);
             }
         }
     }
+
     void setQuestions() {
-        options[4].setSelected(true);
+        options[0].setSelected(true);
 
         switch (current) {
             case 0:
@@ -208,5 +217,9 @@ class OnlineTest extends JFrame implements ActionListener {
             default:
                 return false;
         }
+    }
+
+    public static void main(String[] args) {
+        new OnlineTest("Online Test");
     }
 }

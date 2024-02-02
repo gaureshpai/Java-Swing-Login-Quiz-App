@@ -38,17 +38,30 @@ public class LoginApp extends JFrame implements ActionListener {
         inputPanel.add(passwordField = new JPasswordField());
         inputPanel.add(new JLabel()); // Empty label for spacing
         inputPanel.add(showPasswordCheckbox = new JCheckBox("Show Password"));
-        
+
+        // Change the background color and font style for the inputPanel
+        inputPanel.setBackground(new Color(230, 230, 255));
+        Font inputFont = new Font("Arial", Font.PLAIN, 14);
+        usernameField.setFont(inputFont);
+        passwordField.setFont(inputFont);
+        inputPanel.setFont(inputFont);
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
         buttonPanel.add(loginButton);
+
+        // Change the background color and font style for the buttonPanel
+        buttonPanel.setBackground(new Color(200, 200, 255));
+        loginButton.setFont(new Font("Arial", Font.BOLD, 16));
 
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
         errorLabel = new JLabel();
         errorLabel.setForeground(Color.RED);
+        // Change the font style for the errorLabel
+        errorLabel.setFont(new Font("Arial", Font.BOLD, 14));
         add(errorLabel, BorderLayout.NORTH);
 
         // Add ActionListener to the checkbox
@@ -58,6 +71,7 @@ public class LoginApp extends JFrame implements ActionListener {
         setLocationRelativeTo(null); // Center the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
