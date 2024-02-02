@@ -6,45 +6,43 @@ import java.util.*;
 class User {
     String username;
     String password;
+
     public User(String username, String password) {
-        this.username = username;  // Use "this" to assign to object fields
+        this.username = username;  
         this.password = password;
     }
 }
 
 public class LoginApp extends JFrame implements ActionListener {
-	
-	JLabel L1,L2;
-	JTextField usernameField;
+
+    JLabel L1, L2, errorLabel;
+    JTextField usernameField;
     JPasswordField passwordField;
     JButton loginButton;
-    JLabel errorLabel;
 
-    LinkedList<User> users = new LinkedList<>(); 
-    
+    // Use an array to store multiple users
+    User[] users = { new User("user1", "password1"), new User("user2", "password2") };
+
     public LoginApp() {
- 
-    	
+
         setTitle("Login");
-        setLayout(new GridLayout(5,10,20,40));
-        User a = new User("fakeuser","fakeuser123");
-        users.add(a);
+        setLayout(new GridLayout(5, 2, 20, 20));
 
         add(L1 = new JLabel("Username:"));
         add(usernameField = new JTextField());
 
         add(L2 = new JLabel("Password:"));
         add(passwordField = new JPasswordField());
-        
-        add(new JLabel(""));
+
+        add(new JLabel("")); // Empty label for spacing
         add(loginButton = new JButton("Login"));
-        add(errorLabel = new JLabel());
-        errorLabel.setForeground(Color.RED);
         loginButton.addActionListener(this);
 
-        setSize(400,350);
-        setLocation(250,100);
-//        setLocationRelativeTo(null); // Center the window
+        add(errorLabel = new JLabel());
+        errorLabel.setForeground(Color.RED);
+
+        setSize(400, 200);
+        setLocationRelativeTo(null); // Center the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -54,12 +52,13 @@ public class LoginApp extends JFrame implements ActionListener {
             String password = new String(passwordField.getPassword());
 
             boolean found = false;
+
             for (User user : users) {
                 if (user.username.equals(username) && user.password.equals(password)) {
                     found = true;
                     // Grant access here
                     dispose();
-                    OnlineTest testapp = new OnlineTest("online test of java for "+user.username);
+                    OnlineTest testapp = new OnlineTest("Online Test of Java for " + user.username);
                     testapp.setVisible(true);
                     break;
                 }
@@ -70,8 +69,8 @@ public class LoginApp extends JFrame implements ActionListener {
             }
         }
     }
-    public static void main(String s[])
-	{
-    	new LoginApp().setVisible(true);
-	}
+
+    public static void main(String s[]) {
+        new LoginApp().setVisible(true);
+    }
 }
