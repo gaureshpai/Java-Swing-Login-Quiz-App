@@ -1,180 +1,212 @@
-/*Online Java Paper Test*/
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class OnlineTest extends JFrame implements ActionListener
-{
-	JLabel l;
-	JRadioButton jb[]=new JRadioButton[5];
-	JButton b1,b2;
-	ButtonGroup bg;
-	int count=0,current=0,x=1,y=1,now=0;
-	int m[]=new int[10];	
-	OnlineTest(String s)
-	{
-		super(s);
-		l=new JLabel();
-		add(l);
-		bg=new ButtonGroup();
-		for(int i=0;i<5;i++)
-		{
-			jb[i]=new JRadioButton();	
-			add(jb[i]);
-			bg.add(jb[i]);
-		}
-		b1=new JButton("Next");
-		b2=new JButton("Bookmark");
-		b1.addActionListener(this);
-		b2.addActionListener(this);
-		add(b1);add(b2);
-		set();
-		l.setBounds(30,40,450,20);
-		jb[0].setBounds(50,80,100,20);
-		jb[1].setBounds(50,110,100,20);
-		jb[2].setBounds(50,140,100,20);
-		jb[3].setBounds(50,170,100,20);
-		b1.setBounds(100,240,100,30);
-		b2.setBounds(270,240,100,30);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
-		setLocation(250,100);
-		setVisible(true);
-		setSize(600,350);
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		if(e.getSource()==b1)
-		{
-			if(check())
-				count=count+1;
-			current++;
-			set();	
-			if(current==9)
-			{
-				b1.setEnabled(false);
-				b2.setText("Result");
-			}
-		}
-		if(e.getActionCommand().equals("Bookmark"))
-		{
-			JButton bk=new JButton("Bookmark"+x);
-			bk.setBounds(480,20+30*x,100,30);
-			add(bk);
-			bk.addActionListener(this);
-			m[x]=current;
-			x++;
-			current++;
-			set();	
-			if(current==9)
-				b2.setText("Result");
-			setVisible(false);
-			setVisible(true);
-		}
-		for(int i=0,y=1;i<x;i++,y++)
-		{
-		if(e.getActionCommand().equals("Bookmark"+y))
-		{
-			if(check())
-				count=count+1;
-			now=current;
-			current=m[y];
-			set();
-			((JButton)e.getSource()).setEnabled(false);
-			current=now;
-		}
-		}
-	
-		if(e.getActionCommand().equals("Result"))
-		{
-			if(check())
-				count=count+1;
-			current++;
-			//System.out.println("correct ans="+count);
-			JOptionPane.showMessageDialog(this,"correct ans="+count);
-			System.exit(0);
-		}
-	}
-	void set()
-	{
-		jb[4].setSelected(true);
-		if(current==0)
-		{
-			l.setText("Que1: Which one among these is not a datatype");
-			jb[0].setText("int");jb[1].setText("Float");jb[2].setText("boolean");jb[3].setText("char");	
-		}
-		if(current==1)
-		{
-			l.setText("Que2: Which class is available to all the class automatically");
-			jb[0].setText("Swing");jb[1].setText("Applet");jb[2].setText("Object");jb[3].setText("ActionEvent");
-		}
-		if(current==2)
-		{
-			l.setText("Que3: Which package is directly available to our class without importing it");
-			jb[0].setText("swing");jb[1].setText("applet");jb[2].setText("net");jb[3].setText("lang");
-		}
-		if(current==3)
-		{
-			l.setText("Que4: String class is defined in which package");
-			jb[0].setText("lang");jb[1].setText("Swing");jb[2].setText("Applet");jb[3].setText("awt");
-		}
-		if(current==4)
-		{
-			l.setText("Que5: Which institute is best for java coaching");
-			jb[0].setText("Utek");jb[1].setText("Aptech");jb[2].setText("SSS IT");jb[3].setText("jtek");
-		}
-		if(current==5)
-		{
-			l.setText("Que6: Which one among these is not a keyword");
-			jb[0].setText("class");jb[1].setText("int");jb[2].setText("get");jb[3].setText("if");
-		}
-		if(current==6)
-		{
-			l.setText("Que7: Which one among these is not a class ");
-			jb[0].setText("Swing");jb[1].setText("Actionperformed");jb[2].setText("ActionEvent");jb[3].setText("Button");
-		}
-		if(current==7)
-		{
-			l.setText("Que8: which one among these is not a function of Object class");
-			jb[0].setText("toString");jb[1].setText("finalize");jb[2].setText("equals");jb[3].setText("getDocumentBase");		
-		}
-		if(current==8)
-		{
-			l.setText("Que9: which function is not present in Applet class");
-			jb[0].setText("init");jb[1].setText("main");jb[2].setText("start");jb[3].setText("destroy");
-		}
-		if(current==9)
-		{
-			l.setText("Que10: Which one among these is not a valid component");
-			jb[0].setText("JButton");jb[1].setText("JList");jb[2].setText("JButtonGroup");jb[3].setText("JTextArea");
-		}
-		l.setBounds(30,40,450,20);
-		for(int i=0,j=0;i<=90;i+=30,j++)
-			jb[j].setBounds(50,80+i,200,20);
-	}
-	boolean check()
-	{
-		if(current==0)
-			return(jb[1].isSelected());
-		if(current==1)
-			return(jb[2].isSelected());
-		if(current==2)
-			return(jb[3].isSelected());
-		if(current==3)
-			return(jb[0].isSelected());
-		if(current==4)
-			return(jb[2].isSelected());
-		if(current==5)
-			return(jb[2].isSelected());
-		if(current==6)
-			return(jb[1].isSelected());
-		if(current==7)
-			return(jb[3].isSelected());
-		if(current==8)
-			return(jb[1].isSelected());
-		if(current==9)
-			return(jb[2].isSelected());
-		return false;
-	}
+class OnlineTest extends JFrame implements ActionListener {
+    JLabel questionLabel;
+    JRadioButton options[] = new JRadioButton[5];
+    JButton nextButton, bookmarkButton, prevButton; 
+    ButtonGroup buttonGroup;
+    int count = 0, current = 0, bookmarkCount = 1;
+    int bookmarks[] = new int[10];
+
+    OnlineTest(String title) {
+        super(title);
+
+        questionLabel = new JLabel();
+        add(questionLabel);
+
+        buttonGroup = new ButtonGroup();
+        for (int i = 0; i < 5; i++) {
+            options[i] = new JRadioButton();
+            add(options[i]);
+            buttonGroup.add(options[i]);
+        }
+
+        nextButton = new JButton("Next");
+        bookmarkButton = new JButton("Bookmark");
+        prevButton = new JButton("Previous"); 
+
+        nextButton.addActionListener(this);
+        bookmarkButton.addActionListener(this);
+        prevButton.addActionListener(this);
+
+        add(nextButton);
+        add(prevButton); 
+        add(bookmarkButton);
+
+        setQuestions();
+        
+        questionLabel.setBounds(30, 40, 450, 20);
+
+        for (int i = 0, y = 1; i < 5; i++, y++) {
+            options[i].setBounds(50, 80 + i * 30, 200, 20);
+        }
+
+        nextButton.setBounds(100, 240, 100, 30);
+        prevButton.setBounds(210, 240, 100, 30); 
+        bookmarkButton.setBounds(320, 240, 100, 30); 
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setLocation(250, 100);
+        setVisible(true);
+        setSize(600, 350);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == nextButton) {
+            if (checkAnswer())
+                count++;
+            current++;
+            setQuestions();
+            if (current == 9) {
+                nextButton.setEnabled(false);
+                bookmarkButton.setText("Result");
+            }
+        } else if (e.getSource() == bookmarkButton) {
+            JButton bookmarkBtn = new JButton("Bookmark " + bookmarkCount);
+            bookmarkBtn.setBounds(480, 20 + 30 * bookmarkCount, 100, 30);
+            add(bookmarkBtn);
+            bookmarkBtn.addActionListener(this);
+            bookmarks[bookmarkCount] = current;
+            bookmarkCount++;
+            current++;
+            setQuestions();
+            if (current == 9)
+                bookmarkButton.setText("Result");
+            setVisible(false);
+            setVisible(true);
+        } else if (e.getSource() == prevButton) {
+            if (current > 0) {
+                current--;
+                setQuestions();
+            }
+        } else {
+            for (int i = 0, y = 1; i < bookmarkCount; i++, y++) {
+                if (e.getActionCommand().equals("Bookmark " + y)) {
+                    if (checkAnswer())
+                        count++;
+                    int temp = current;
+                    current = bookmarks[y];
+                    setQuestions();
+                    ((JButton) e.getSource()).setEnabled(false);
+                    current = temp;
+                }
+            }
+
+            if (e.getActionCommand().equals("Result")) {
+                if (checkAnswer())
+                    count++;
+                current++;
+                JOptionPane.showMessageDialog(this, "Correct answers: " + count);
+                System.exit(0);
+            }
+        }
+    }
+    void setQuestions() {
+        options[4].setSelected(true);
+
+        switch (current) {
+            case 0:
+                questionLabel.setText("Que1: Which one among these is not a datatype");
+                options[0].setText("int");
+                options[1].setText("Float");
+                options[2].setText("boolean");
+                options[3].setText("char");
+                break;
+            case 1:
+                questionLabel.setText("Que2: Which class is available to all classes automatically");
+                options[0].setText("Swing");
+                options[1].setText("Applet");
+                options[2].setText("Object");
+                options[3].setText("ActionEvent");
+                break;
+            case 2:
+                questionLabel.setText("Que3: Which package is directly available to our class without importing it");
+                options[0].setText("swing");
+                options[1].setText("applet");
+                options[2].setText("net");
+                options[3].setText("lang");
+                break;
+            case 3:
+                questionLabel.setText("Que4: String class is defined in which package");
+                options[0].setText("lang");
+                options[1].setText("Swing");
+                options[2].setText("Applet");
+                options[3].setText("awt");
+                break;
+            case 4:
+                questionLabel.setText("Que5: Which institute is best for Java coaching");
+                options[0].setText("Utek");
+                options[1].setText("Aptech");
+                options[2].setText("SSS IT");
+                options[3].setText("jtek");
+                break;
+            case 5:
+                questionLabel.setText("Que6: Which one among these is not a keyword");
+                options[0].setText("class");
+                options[1].setText("int");
+                options[2].setText("get");
+                options[3].setText("if");
+                break;
+            case 6:
+                questionLabel.setText("Que7: Which one among these is not a class");
+                options[0].setText("Swing");
+                options[1].setText("Actionperformed");
+                options[2].setText("ActionEvent");
+                options[3].setText("Button");
+                break;
+            case 7:
+                questionLabel.setText("Que8: Which one among these is not a function of the Object class");
+                options[0].setText("toString");
+                options[1].setText("finalize");
+                options[2].setText("equals");
+                options[3].setText("getDocumentBase");
+                break;
+            case 8:
+                questionLabel.setText("Que9: Which function is not present in the Applet class");
+                options[0].setText("init");
+                options[1].setText("main");
+                options[2].setText("start");
+                options[3].setText("destroy");
+                break;
+            case 9:
+                questionLabel.setText("Que10: Which one among these is not a valid component");
+                options[0].setText("JButton");
+                options[1].setText("JList");
+                options[2].setText("JButtonGroup");
+                options[3].setText("JTextArea");
+                break;
+        }
+
+        questionLabel.setBounds(30, 40, 450, 20);
+    }
+
+    boolean checkAnswer() {
+        switch (current) {
+            case 0:
+                return options[1].isSelected();
+            case 1:
+                return options[2].isSelected();
+            case 2:
+                return options[3].isSelected();
+            case 3:
+                return options[0].isSelected();
+            case 4:
+                return options[2].isSelected();
+            case 5:
+                return options[2].isSelected();
+            case 6:
+                return options[1].isSelected();
+            case 7:
+                return options[3].isSelected();
+            case 8:
+                return options[1].isSelected();
+            case 9:
+                return options[2].isSelected();
+            default:
+                return false;
+        }
+    }
 }
