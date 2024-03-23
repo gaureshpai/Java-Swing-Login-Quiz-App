@@ -1,5 +1,3 @@
-// File: User.java
-
 class User {
     String username;
     char[] password;

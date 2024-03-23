@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class OnlineTest extends JFrame implements ActionListener {
     JLabel questionLabel;
-    JRadioButton options[] = new JRadioButton[4]; // Reduced to 4 radio buttons
+    JRadioButton options[] = new JRadioButton[4];
     JButton nextButton, bookmarkButton, prevButton, resultButton; 
     ButtonGroup buttonGroup;
     int count = 0, current = 0, bookmarkCount = 1;
@@ -17,7 +17,7 @@ public class OnlineTest extends JFrame implements ActionListener {
         add(questionLabel);
 
         buttonGroup = new ButtonGroup();
-        for (int i = 0; i < 4; i++) { // Changed to 4 radio buttons
+        for (int i = 0; i < 4; i++) {
             options[i] = new JRadioButton();
             add(options[i]);
             buttonGroup.add(options[i]);
@@ -26,31 +26,31 @@ public class OnlineTest extends JFrame implements ActionListener {
         nextButton = new JButton("Next");
         bookmarkButton = new JButton("Bookmark");
         prevButton = new JButton("Previous"); 
-        resultButton = new JButton("Result"); // Added Result button
+        resultButton = new JButton("Result");
 
         nextButton.addActionListener(this);
         bookmarkButton.addActionListener(this);
         prevButton.addActionListener(this);
-        resultButton.addActionListener(this); // Added action listener for Result button
+        resultButton.addActionListener(this);
 
         add(nextButton);
         add(prevButton); 
         add(bookmarkButton);
-        add(resultButton); // Added Result button
+        add(resultButton);
 
         setQuestions();
 
         questionLabel.setBounds(30, 40, 450, 20);
 
-        for (int i = 0; i < 4; i++) { // Changed to 4 radio buttons
+        for (int i = 0; i < 4; i++) { 
             options[i].setBounds(50, 80 + i * 30, 200, 20);
         }
 
         nextButton.setBounds(100, 240, 100, 30);
         prevButton.setBounds(210, 240, 100, 30); 
         bookmarkButton.setBounds(320, 240, 100, 30);
-        resultButton.setBounds(480, 20, 100, 30); // Positioned the Result button in the top right corner
-        resultButton.setVisible(false); // Initially, Result button is hidden
+        resultButton.setBounds(480, 20, 100, 30);
+        resultButton.setVisible(false);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -82,7 +82,7 @@ public class OnlineTest extends JFrame implements ActionListener {
             setQuestions();
             if (current == 9) {
                 bookmarkButton.setEnabled(false);
-                resultButton.setVisible(true); // Display Result button when all questions are attempted
+                resultButton.setVisible(true);
             }
             setVisible(false);
             setVisible(true);

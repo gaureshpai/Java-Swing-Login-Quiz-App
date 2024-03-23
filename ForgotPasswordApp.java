@@ -19,7 +19,6 @@ public class ForgotPasswordApp extends JFrame implements ActionListener {
 
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
 
-        // Display security question
         securityQuestionLabel = new JLabel("Security Question: " + user.securityQuestion);
         mainPanel.add(securityQuestionLabel, BorderLayout.NORTH);
 
@@ -32,7 +31,7 @@ public class ForgotPasswordApp extends JFrame implements ActionListener {
 
         add(mainPanel);
 
-        pack(); // Auto-size the window to fit components
+        pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -57,7 +56,6 @@ public class ForgotPasswordApp extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        // For testing the ForgotPasswordApp independently
         User testUser = new User("testuser", "testpassword".toCharArray(), "What is your favorite color?", "Green");
         SwingUtilities.invokeLater(() -> {
             new ForgotPasswordApp(testUser);

@@ -21,14 +21,12 @@ public class LoginApp extends JFrame implements ActionListener {
         new User("user2", "password2".toCharArray(), "What is your favorite color?", "Blue")
     };
 
-    // Forgot Password components
     private ForgotPasswordApp forgotPasswordApp;
 
     public LoginApp() {
         setTitle("Login");
         setLayout(new BorderLayout(20, 20));
 
-        // Top bar with title
         topBarLabel = new JLabel(TOP_BAR_TEXT, SwingConstants.CENTER);
         topBarLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         topBarLabel.setForeground(Color.WHITE);
@@ -51,7 +49,6 @@ public class LoginApp extends JFrame implements ActionListener {
         inputPanel.add(new JPanel());
         inputPanel.add(showPasswordCheckbox);
 
-        // Forgot Password button on the right side
         forgotPasswordButton = new JButton("Forgot Password?");
         forgotPasswordButton.addActionListener(this);
         inputPanel.add(new JPanel());
@@ -59,14 +56,13 @@ public class LoginApp extends JFrame implements ActionListener {
 
         add(inputPanel, BorderLayout.CENTER);
 
-        // Login button at the bottom
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(loginButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Styling changes
+
         inputPanel.setBackground(Color.WHITE);
         Font inputFont = new Font("Segoe UI", Font.PLAIN, 16);
         usernameField.setFont(inputFont);
@@ -96,12 +92,11 @@ public class LoginApp extends JFrame implements ActionListener {
     }
 
     private void handleForgotPassword() {
-        // Check if username exists
+
         String username = usernameField.getText();
         User user = findUserByUsername(username);
 
         if (user != null) {
-            // Display the ForgotPasswordApp window
             if (forgotPasswordApp != null) {
                 forgotPasswordApp.dispose();
             }
@@ -129,11 +124,11 @@ public class LoginApp extends JFrame implements ActionListener {
 
             for (User user : users) {
                 if (user.username.equals(username) && Arrays.equals(user.password, passwordChars)) {
-                    return true; // Successful login
+                    return true;
                 }
             }
 
-            return false; // Unsuccessful login
+            return false;
         }
 
         @Override
@@ -160,12 +155,10 @@ public class LoginApp extends JFrame implements ActionListener {
     }
 
     private void showErrorMessage(String message) {
-        // Display error message in the error label
         topBarLabel.setText(message);
         topBarLabel.setBackground(new Color(255, 77, 77));
         topBarLabel.setOpaque(true);
 
-        // Reset the error message after a delay
         Timer timer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
